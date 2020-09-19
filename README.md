@@ -1,4 +1,4 @@
-# yolojs also knowned as Seagull.js
+# Seagull.js
 
 ![alt text](https://cdn.pixabay.com/photo/2020/02/27/13/16/sea-gull-4884600_960_720.jpg)
 
