@@ -1,5 +1,7 @@
 # yolojs also knowned as Seagull.js
 
+![alt text](https://cdn.pixabay.com/photo/2020/02/27/13/16/sea-gull-4884600_960_720.jpg)
+
 This project was started in the look for a high performance custom javascript code that could do the same as yolo widthout having to import a 100gb code from tensorflow or whatever you are using.
 
 For you to do a project you should be able to have something light, slick and with high performance, thats it.
