@@ -6,10 +6,6 @@ This project was started in the look for a high performance custom javascript co
 
 For you to do a project you should be able to have something light, slick and with high performance, thats it.
 
-I dont want to learn synthax because i dont have patience to do that.
-
-Doing it from scratch allows me to do what i want the exact way i want it.
-
 why is this called Seagull ? 
 
 the first google search reuslts for "images" had a paradise pic, a mountain and you guessed it, a seagull.
