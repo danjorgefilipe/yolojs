@@ -28,6 +28,8 @@
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 var imageData;
+
+
 document.getElementById("myFile").onchange = function (evt) {
   var tgt = evt.target || window.event.srcElement,
     files = tgt.files;
@@ -49,18 +51,21 @@ function showImage(fileReader) {
 function getImageData(img) {
   ctx.drawImage(img, 0, 0);
 
-  console.time();
-
+  
   imageData = ctx.getImageData(0, 0, img.width, img.height).data;
-  console.log("image data:", imageData);
+  console.time();
 
 
   //maxpool 
   let i = 0
   temp = [];
   final = [];
-  for(i; i < imageData.length; i++) {
 
+
+
+
+  for(i; i < imageData.length; i++) {
+    
     if(i % 10000 == 0 && i != 0) {
       let max = average(temp)
       final.push(max)
@@ -69,15 +74,55 @@ function getImageData(img) {
     else {
       temp.push(imageData[i])
     }
+  };
 
+
+// var c = document.createElement("c");
+
+let c = document.getElementById("c");
+
+  var ctx2 = c.getContext('2d');
+
+  // create the imageData object
+  var dataImage = ctx2.createImageData(img.width , img.height );
+  // browsers supporting TypedArrays
+  if (dataImage.data.set) {
+    dataImage.data.set(final);
+  } else {
+    // IE9
+    final.forEach(function(val, i) {
+      dataImage.data[i] = val;
+    });
   }
 
+
+  ctx2.putImageData(dataImage, 0, 0);
   console.log(final)
-
-
   console.timeEnd();
+
+  document.getElementById('test').innerHTML="["+final.join()+"]";
+
+  var randoms = [...Array(10)].map(() => Math.floor(Math.random() * 9));
+
+  document.getElementById('test2').innerHTML="["+randoms.join()+"]";
+
+  var randoms2 = [...Array(10)].map(() => Math.floor(Math.random() * 9));
+
+  document.getElementById('test3').innerHTML="["+randoms2.join()+"]";
+
+
+
+
+
+
 }
 
+// ------------------------------------------------------------------------
+
+
+
+
+// utils ------------------------------------------------------------------------------------------
 function reshape(array, n) {
   return compact(
     array.map(function (el, i) {
