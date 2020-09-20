@@ -21,7 +21,7 @@
 
 // save the numbers, thats what you need, wheights, bias ect
 
-// made for 60 fps at 720p webcam , max netwrork time should be bellow 15 milliseconds
+// made for 60 fps at 720p webcam , max netwrork time should be bellow 16 ms
 
 // foward ------------------------------------------------------------------------------
 
@@ -48,11 +48,34 @@ function showImage(fileReader) {
 
 function getImageData(img) {
   ctx.drawImage(img, 0, 0);
+
+  console.time();
+
   imageData = ctx.getImageData(0, 0, img.width, img.height).data;
   console.log("image data:", imageData);
-  console.log("image data lenghththt:", imageData.length);
-  console.log("img.width/ 10", img.width / 10);
-  console.log("img.height/ 10", img.height / 10);
+
+
+  //maxpool 
+  let i = 0
+  temp = [];
+  final = [];
+  for(i; i < imageData.length; i++) {
+
+    if(i % 10000 == 0 && i != 0) {
+      let max = average(temp)
+      final.push(max)
+      temp = [];
+    }
+    else {
+      temp.push(imageData[i])
+    }
+
+  }
+
+  console.log(final)
+
+
+  console.timeEnd();
 }
 
 function reshape(array, n) {
@@ -81,13 +104,16 @@ function compact(array) {
   return result;
 }
 
-bla = reshape([1,2,3,4,5,6,7,8,9], 3)
-bla2 = reshape()
-console.log(bla)
+function average(nums) {
+  return Math.round(nums.reduce((a, b) => (a + b)) / nums.length);
+}
 
-
-
-console.time();
+// bla = reshape([1,2,3,4,5,6,7,8,9], 3)
+// bla2 = bla.forEach(el => {
+//     re = reshape(el,1)
+//     console.log('re', re)
+// });
+// console.log(bla)
 
 // using several filters for this one, do a convolution
 function convolution(vec1, vec2) {
@@ -118,7 +144,5 @@ function convolution(vec1, vec2) {
 //   var randoms = [...Array(10)].map(() => Math.floor(Math.random() * 9));
 
 //   console.log(randoms)
-
-console.timeEnd();
 
 // backward ----------------------------------------------------------------------------
