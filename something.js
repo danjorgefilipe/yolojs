@@ -29,7 +29,6 @@ var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 var imageData;
 
-
 document.getElementById("myFile").onchange = function (evt) {
   var tgt = evt.target || window.event.srcElement,
     files = tgt.files;
@@ -51,143 +50,116 @@ function showImage(fileReader) {
 function getImageData(img) {
   ctx.drawImage(img, 0, 0);
 
-  
   imageData = ctx.getImageData(0, 0, img.width, img.height).data;
   console.time();
 
-
-  //maxpool 
-  let i = 0
+  //maxpool
+  let i = 0;
   temp = [];
   final = [];
-
-
-
-
-  for(i; i < imageData.length; i++) {
-    
-    if(i % 10000 == 0 && i != 0) {
-      let max = average(temp)
-      final.push(max)
+  for (i; i < imageData.length; i++) {
+    if (i % 30000 == 0 && i != 0) {
+      let max = average(temp);
+      final.push(max);
       temp = [];
+    } else {
+      temp.push(imageData[i]);
     }
-    else {
-      temp.push(imageData[i])
-    }
-  };
+  }
 
+  // var c = document.createElement("c");
 
-// var c = document.createElement("c");
+  let c = document.getElementById("c");
 
-let c = document.getElementById("c");
-
-  var ctx2 = c.getContext('2d');
+  var ctx2 = c.getContext("2d");
 
   // create the imageData object
-  var dataImage = ctx2.createImageData(img.width , img.height );
+  var dataImage = ctx2.createImageData(img.width, img.height);
   // browsers supporting TypedArrays
   if (dataImage.data.set) {
     dataImage.data.set(final);
   } else {
     // IE9
-    final.forEach(function(val, i) {
+    final.forEach(function (val, i) {
       dataImage.data[i] = val;
     });
   }
 
-
   ctx2.putImageData(dataImage, 0, 0);
-  console.log(final)
+  console.log(final);
+
+  document.getElementById("test").innerHTML = "[" + final.join() + "]";
+
+  var w1 = [...Array(33)].map(() => Math.floor(Math.random() * 9));
+
+  document.getElementById("test2").innerHTML = "[" + w1.join() + "]";
+
+  var w2 = [...Array(12)].map(() => Math.floor(Math.random() * 101));
+
+  document.getElementById("test3").innerHTML = "[" + w2.join() + "]";
+
+  // generate neural network to pass the data, one for the bouding boxes
+
+  const m = 2;
+  const b = 12;
+
+  //neuron with sigmoid
+  const sigmoid = (x) => 1 / (1 + Math.pow(Math.E, -(m * x + b)));
+
+
+  let arr = [1,2,3]
+
+  const neuron = (arr) => {
+
+    //dot product between pixles and weights
+
+
+  }
+ 
+
+let a = [[1, 3, -5]]
+let b2 = [[4], [-2], [-1]]
+
+arrayy = []
+
+result = null;
+
+// a . b = ab^t       a times b where b is transposed
+const dotProduct = (a,b2) => {
+  let i = 0;
+  for( i; i < a.length; i++) {
+    console.log(a[i])
+    arrayy.push(a[i]*b2[i])
+  }
+  result = arrayy.reduce(function(prev, cur) {
+    return prev + cur;
+  })
+}
+
+dotProduct(final,w1)
+
+console.log(sigmoid(result))
+
+
+
+
+
+
+  // one for classification
+
+
+
+
+
+
+
+
+
+
   console.timeEnd();
-
-  document.getElementById('test').innerHTML="["+final.join()+"]";
-
-  var randoms = [...Array(10)].map(() => Math.floor(Math.random() * 9));
-
-  document.getElementById('test2').innerHTML="["+randoms.join()+"]";
-
-  var randoms2 = [...Array(10)].map(() => Math.floor(Math.random() * 9));
-
-  document.getElementById('test3').innerHTML="["+randoms2.join()+"]";
-
-
-
-
-
-
 }
 
 // ------------------------------------------------------------------------
 
-
-
-
-// utils ------------------------------------------------------------------------------------------
-function reshape(array, n) {
-  return compact(
-    array.map(function (el, i) {
-      if (i % n === 0) {
-        return array.slice(i, i + n);
-      }
-    })
-  );
-}
-
-function compact(array) {
-  let resIndex = 0;
-  const result = [];
-
-  if (array == null) {
-    return result;
-  }
-
-  for (const value of array) {
-    if (value) {
-      result[resIndex++] = value;
-    }
-  }
-  return result;
-}
-
-function average(nums) {
-  return Math.round(nums.reduce((a, b) => (a + b)) / nums.length);
-}
-
-// bla = reshape([1,2,3,4,5,6,7,8,9], 3)
-// bla2 = bla.forEach(el => {
-//     re = reshape(el,1)
-//     console.log('re', re)
-// });
-// console.log(bla)
-
-// using several filters for this one, do a convolution
-function convolution(vec1, vec2) {
-  var disp = 0;
-  var convVec = [];
-  for (j = 0; j < vec2.length; j++) {
-    convVec.push(vec1[0] * vec2[j]);
-  }
-  disp = disp + 1;
-  for (i = 1; i < vec1.length; i++) {
-    for (j = 0; j < vec2.length; j++) {
-      if (disp + j !== convVec.length) {
-        convVec[disp + j] = convVec[disp + j] + vec1[i] * vec2[j];
-      } else {
-        convVec.push(vec1[i] * vec2[j]);
-      }
-    }
-    disp = disp + 1;
-  }
-  return convVec;
-}
-
-// vecA = [2,3,2,1]
-// vecB = [4,1,2,3]
-// ans = convolution(vecA, vecB);
-// console.log('ans---> ',ans)
-
-//   var randoms = [...Array(10)].map(() => Math.floor(Math.random() * 9));
-
-//   console.log(randoms)
 
 // backward ----------------------------------------------------------------------------
